@@ -20,3 +20,48 @@ func JsonEncodeToFile(from interface{}, toFilePath string) (err error)
 ```
 JsonEncodeToFile creates the specified file and attempts to JSON-encode into it
 from the specified source.
+
+#### type Buf
+
+```go
+type Buf struct {
+}
+```
+
+
+#### func  NewBuf
+
+```go
+func NewBuf(b []byte) *Buf
+```
+
+#### func (*Buf) Bytes
+
+```go
+func (me *Buf) Bytes() []byte
+```
+
+#### func (*Buf) Write
+
+```go
+func (me *Buf) Write(b []byte)
+```
+
+#### func (*Buf) WriteByte
+
+```go
+func (me *Buf) WriteByte(b byte)
+```
+
+#### func (*Buf) WriteString
+
+```go
+func (me *Buf) WriteString(b string)
+```
+
+#### func (*Buf) WriteTo
+
+```go
+func (me *Buf) WriteTo(w io.Writer) (int64, error)
+```
+WriteTo implements the `io.WriterTo` interface.
