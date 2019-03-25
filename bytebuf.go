@@ -26,7 +26,7 @@ func (me *Buf) WriteByte(b byte) {
 	me.b[l] = b
 }
 
-func (me *Buf) Write(b []byte) {
+func (me *Buf) Write(b []byte) (int, error) {
 	l, c, n := len(me.b), cap(me.b), len(b)
 	if ln := l + n; ln > c {
 		old := me.b
@@ -36,6 +36,7 @@ func (me *Buf) Write(b []byte) {
 		me.b = me.b[:ln]
 	}
 	copy(me.b[l:], b)
+	return n, nil
 }
 
 func (me *Buf) WriteString(b string) {
@@ -54,4 +55,10 @@ func (me *Buf) WriteString(b string) {
 func (me *Buf) WriteTo(w io.Writer) (int64, error) {
 	n, err := w.Write(me.b)
 	return int64(n), err
+}
+
+func (me *Buf) TrimSuffix(suffix byte) {
+	for n := len(me.b) - 1; n >= 0 && suffix == me.b[n]; n = len(me.b) - 1 {
+		me.b = me.b[:n]
+	}
 }

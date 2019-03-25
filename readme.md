@@ -41,10 +41,16 @@ func NewBuf(b []byte) *Buf
 func (me *Buf) Bytes() []byte
 ```
 
+#### func (*Buf) TrimSuffix
+
+```go
+func (me *Buf) TrimSuffix(suffix byte)
+```
+
 #### func (*Buf) Write
 
 ```go
-func (me *Buf) Write(b []byte)
+func (me *Buf) Write(b []byte) (int, error)
 ```
 
 #### func (*Buf) WriteByte
