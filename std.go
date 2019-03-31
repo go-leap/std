@@ -3,6 +3,7 @@ package ustd
 import (
 	"encoding/json"
 	"os"
+	"sync"
 )
 
 // JsonDecodeFromFile opens the specified file and attempts to JSON-decode into the specified destination location.
@@ -23,4 +24,14 @@ func JsonEncodeToFile(from interface{}, toFilePath string) (err error) {
 		err = json.NewEncoder(f).Encode(from)
 	}
 	return
+}
+
+func For(numIter int, on func(int)) {
+	var wait sync.WaitGroup
+	wait.Add(numIter)
+	do := func(i int) { on(i); wait.Done() }
+	for i := 0; i < numIter; i++ {
+		go do(i)
+	}
+	wait.Wait()
 }

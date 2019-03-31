@@ -5,6 +5,12 @@
 
 ## Usage
 
+#### func  For
+
+```go
+func For(numIter int, on func(int))
+```
+
 #### func  JsonDecodeFromFile
 
 ```go
