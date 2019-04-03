@@ -27,53 +27,73 @@ func JsonEncodeToFile(from interface{}, toFilePath string) (err error)
 JsonEncodeToFile creates the specified file and attempts to JSON-encode into it
 from the specified source.
 
-#### type Buf
+#### func  ReadAll
 
 ```go
-type Buf struct {
+func ReadAll(r io.Reader, initialBufSize int64) (data []byte, err error)
+```
+
+#### func  Time
+
+```go
+func Time() func() time.Duration
+```
+
+#### type BytesReader
+
+```go
+type BytesReader struct {
+	Data []byte
 }
 ```
 
 
-#### func  NewBuf
+#### func (*BytesReader) Read
 
 ```go
-func NewBuf(b []byte) *Buf
+func (me *BytesReader) Read(p []byte) (n int, err error)
 ```
 
-#### func (*Buf) Bytes
+#### type BytesWriter
 
 ```go
-func (me *Buf) Bytes() []byte
+type BytesWriter struct{ Data []byte }
 ```
 
-#### func (*Buf) TrimSuffix
+
+#### func (*BytesWriter) Bytes
 
 ```go
-func (me *Buf) TrimSuffix(suffix byte)
+func (me *BytesWriter) Bytes() []byte
 ```
 
-#### func (*Buf) Write
+#### func (*BytesWriter) TrimSuffix
 
 ```go
-func (me *Buf) Write(b []byte) (int, error)
+func (me *BytesWriter) TrimSuffix(suffix byte)
 ```
 
-#### func (*Buf) WriteByte
+#### func (*BytesWriter) Write
 
 ```go
-func (me *Buf) WriteByte(b byte)
+func (me *BytesWriter) Write(b []byte) (int, error)
 ```
 
-#### func (*Buf) WriteString
+#### func (*BytesWriter) WriteByte
 
 ```go
-func (me *Buf) WriteString(b string)
+func (me *BytesWriter) WriteByte(b byte)
 ```
 
-#### func (*Buf) WriteTo
+#### func (*BytesWriter) WriteString
 
 ```go
-func (me *Buf) WriteTo(w io.Writer) (int64, error)
+func (me *BytesWriter) WriteString(b string)
+```
+
+#### func (*BytesWriter) WriteTo
+
+```go
+func (me *BytesWriter) WriteTo(w io.Writer) (int64, error)
 ```
 WriteTo implements the `io.WriterTo` interface.

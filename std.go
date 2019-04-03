@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"os"
 	"sync"
+	"time"
 )
 
 // JsonDecodeFromFile opens the specified file and attempts to JSON-decode into the specified destination location.
@@ -34,4 +35,11 @@ func For(numIter int, on func(int)) {
 		go do(i)
 	}
 	wait.Wait()
+}
+
+func Time() func() time.Duration {
+	starttime := time.Now().UnixNano()
+	return func() time.Duration {
+		return time.Duration(time.Now().UnixNano() - starttime)
+	}
 }
