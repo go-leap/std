@@ -45,12 +45,6 @@ func ReadAll(r io.Reader, initialBufSize int64) (data []byte, err error)
 func Time() func() time.Duration
 ```
 
-#### func  WriteAll
-
-```go
-func WriteAll(data []byte, to io.Writer) (err error)
-```
-
 #### type BytesReader
 
 ```go
