@@ -103,3 +103,15 @@ func ReadAll(r io.Reader, initialBufSize int64) (data []byte, err error) {
 	}
 	return
 }
+
+func WriteAll(data []byte, to io.Writer) (err error) {
+	var n int
+	for err == nil {
+		if n, err = to.Write(data); n == len(data) {
+			break
+		} else {
+			data = data[n:]
+		}
+	}
+	return
+}

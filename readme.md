@@ -11,6 +11,12 @@
 func For(numIter int, on func(int))
 ```
 
+#### func  HashWyPlus
+
+```go
+func HashWyPlus(oldSumWy, oldSumOther uint64, data []byte) (newSumWy, newSumOther uint64, bothSame bool, err error)
+```
+
 #### func  JsonDecodeFromFile
 
 ```go
@@ -37,6 +43,12 @@ func ReadAll(r io.Reader, initialBufSize int64) (data []byte, err error)
 
 ```go
 func Time() func() time.Duration
+```
+
+#### func  WriteAll
+
+```go
+func WriteAll(data []byte, to io.Writer) (err error)
 ```
 
 #### type BytesReader
