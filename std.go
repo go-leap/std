@@ -2,6 +2,7 @@ package ustd
 
 import (
 	"encoding/json"
+	"io"
 	"os"
 	"sync"
 	"time"
@@ -48,5 +49,15 @@ func Time() func() time.Duration {
 	starttime := time.Now().UnixNano()
 	return func() time.Duration {
 		return time.Duration(time.Now().UnixNano() - starttime)
+	}
+}
+
+func WriteLines(to io.Writer) func(...string) {
+	return func(lns ...string) {
+		b := make([]byte, 0, len(lns)*len(lns[0]))
+		for i := range lns {
+			b = append(append(b, lns[i]...), '\n')
+		}
+		_, _ = to.Write(b)
 	}
 }
