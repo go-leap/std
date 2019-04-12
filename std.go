@@ -37,6 +37,13 @@ func For(numIter int, on func(int)) {
 	wait.Wait()
 }
 
+func IfNil(val interface{}, thenFallbackTo interface{}) interface{} {
+	if val == nil {
+		return thenFallbackTo
+	}
+	return val
+}
+
 func Time() func() time.Duration {
 	starttime := time.Now().UnixNano()
 	return func() time.Duration {

@@ -17,6 +17,12 @@ func For(numIter int, on func(int))
 func HashWyPlus(oldSumWy, oldSumOther uint64, data []byte) (newSumWy, newSumOther uint64, bothSame bool, err error)
 ```
 
+#### func  IfNil
+
+```go
+func IfNil(val interface{}, thenFallbackTo interface{}) interface{}
+```
+
 #### func  JsonDecodeFromFile
 
 ```go
