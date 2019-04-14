@@ -52,16 +52,6 @@ func Time() func() time.Duration {
 	}
 }
 
-func Write(to io.Writer) func(string, int) {
-	return func(s string, n int) {
-		b := make([]byte, 0, len(s)*n)
-		for i := 0; i < n; i++ {
-			b = append(b, s...)
-		}
-		_, _ = to.Write(b)
-	}
-}
-
 func WriteLines(to io.Writer) func(...string) {
 	return func(lns ...string) {
 		if len(lns) > 0 {
