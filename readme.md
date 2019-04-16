@@ -6,11 +6,11 @@
 ## Usage
 
 ```go
-var Flags []Flag
-```
-
-```go
-var FlagsOnErr func(string, string, error)
+var (
+	Flags              []Flag
+	FlagsOnErr         func(string, string, error)
+	FlagsAddShortNames bool
+)
 ```
 
 #### func  FlagOfBool
@@ -31,10 +31,16 @@ func FlagOfDuration(name string, defaultVal time.Duration, desc string) (val tim
 func FlagOfString(name string, defaultVal string, desc string) string
 ```
 
-#### func  FlagX
+#### func  FlagOfStrings
 
 ```go
-func FlagX(name string, defaultVal interface{}, desc string, fromString func(string) (interface{}, error), toString func(interface{}) string) (val interface{})
+func FlagOfStrings(name string, defaultVal []string, sep string, desc string) []string
+```
+
+#### func  FlagOther
+
+```go
+func FlagOther(name string, defaultVal interface{}, desc string, fromString func(string) (interface{}, error), toString func(interface{}) string) (val interface{})
 ```
 
 #### func  For
@@ -156,4 +162,11 @@ type Flag struct {
 	Desc    string
 	Default string
 }
+```
+
+
+#### func (*Flag) ShortName
+
+```go
+func (me *Flag) ShortName() (shortForm string)
 ```
