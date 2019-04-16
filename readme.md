@@ -5,6 +5,38 @@
 
 ## Usage
 
+```go
+var Flags []Flag
+```
+
+```go
+var FlagsOnErr func(string, string, error)
+```
+
+#### func  FlagOfBool
+
+```go
+func FlagOfBool(name string, defaultVal bool, desc string) bool
+```
+
+#### func  FlagOfDuration
+
+```go
+func FlagOfDuration(name string, defaultVal time.Duration, desc string) (val time.Duration)
+```
+
+#### func  FlagOfString
+
+```go
+func FlagOfString(name string, defaultVal string, desc string) string
+```
+
+#### func  FlagX
+
+```go
+func FlagX(name string, defaultVal interface{}, desc string, fromString func(string) (interface{}, error), toString func(interface{}) string) (val interface{})
+```
+
 #### func  For
 
 ```go
@@ -115,3 +147,13 @@ func (me *BytesWriter) WriteString(b string)
 func (me *BytesWriter) WriteTo(w io.Writer) (int64, error)
 ```
 WriteTo implements the `io.WriterTo` interface.
+
+#### type Flag
+
+```go
+type Flag struct {
+	Name    string
+	Desc    string
+	Default string
+}
+```
