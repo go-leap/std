@@ -16,7 +16,7 @@ var (
 #### func  DoNowAndThenEvery
 
 ```go
-func DoNowAndThenEvery(interval time.Duration, do func()) (stop func())
+func DoNowAndThenEvery(interval time.Duration, should func() bool, do func()) (stop func())
 ```
 
 #### func  FlagOfBool
