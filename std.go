@@ -8,6 +8,19 @@ import (
 	"time"
 )
 
+func DoNowAndThenEvery(interval time.Duration, do func()) (stop func()) {
+	if do(); interval > 0 {
+		ticker := time.NewTicker(interval)
+		stop = ticker.Stop
+		go func() {
+			for range ticker.C {
+				do()
+			}
+		}()
+	}
+	return
+}
+
 // JsonDecodeFromFile opens the specified file and attempts to JSON-decode into the specified destination location.
 func JsonDecodeFromFile(fromFilePath string, intoDestination interface{}) (err error) {
 	var f *os.File

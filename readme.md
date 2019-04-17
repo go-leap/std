@@ -13,6 +13,12 @@ var (
 )
 ```
 
+#### func  DoNowAndThenEvery
+
+```go
+func DoNowAndThenEvery(interval time.Duration, do func()) (stop func())
+```
+
 #### func  FlagOfBool
 
 ```go
