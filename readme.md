@@ -55,10 +55,10 @@ func FlagOther(name string, defaultVal interface{}, desc string, fromString func
 func For(numIter int, on func(int))
 ```
 
-#### func  HashWyPlus
+#### func  HashTwo
 
 ```go
-func HashWyPlus(oldSum1, oldSum2 uint64, data []byte) (newSum1, newSum2 uint64, bothSame bool)
+func HashTwo(oldSum1, oldSum2 uint64, data []byte) (newSum1, newSum2 uint64, bothUnchanged bool)
 ```
 
 #### func  IfNil
