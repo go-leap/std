@@ -58,7 +58,7 @@ func For(numIter int, on func(int))
 #### func  HashWyPlus
 
 ```go
-func HashWyPlus(oldSumWy, oldSumOther uint64, data []byte) (newSumWy, newSumOther uint64, bothSame bool, err error)
+func HashWyPlus(oldSum1, oldSum2 uint64, data []byte) (newSum1, newSum2 uint64, bothSame bool)
 ```
 
 #### func  IfNil
