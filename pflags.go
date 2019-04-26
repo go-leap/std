@@ -73,6 +73,13 @@ func FlagOfBool(name string, defaultVal bool, desc string) bool {
 	).(bool)
 }
 
+func FlagOfUint(name string, defaultVal uint64, desc string) uint64 {
+	return FlagOther(name, defaultVal, desc,
+		func(s string) (interface{}, error) { v, e := strconv.ParseUint(s, 10, 64); return v, e },
+		func(v interface{}) string { return strconv.FormatUint(v.(uint64), 10) },
+	).(uint64)
+}
+
 func FlagOfStrings(name string, defaultVal []string, sep string, desc string) []string {
 	return FlagOther(name, defaultVal, desc,
 		func(s string) (interface{}, error) { return strings.Split(s, sep), nil },

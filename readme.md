@@ -43,6 +43,12 @@ func FlagOfString(name string, defaultVal string, desc string) string
 func FlagOfStrings(name string, defaultVal []string, sep string, desc string) []string
 ```
 
+#### func  FlagOfUint
+
+```go
+func FlagOfUint(name string, defaultVal uint64, desc string) uint64
+```
+
 #### func  FlagOther
 
 ```go
@@ -175,4 +181,37 @@ type Flag struct {
 
 ```go
 func (me *Flag) ShortName() (shortForm string)
+```
+
+#### type Writer
+
+```go
+type Writer struct {
+	io.Writer
+	On struct {
+		AfterEveryNth                int
+		Byte                         byte
+		Do                           func(int) bool
+		ButDontCountImmediateRepeats bool
+	}
+}
+```
+
+
+#### func (*Writer) RestartOnDo
+
+```go
+func (me *Writer) RestartOnDo()
+```
+
+#### func (*Writer) SuspendOnDo
+
+```go
+func (me *Writer) SuspendOnDo()
+```
+
+#### func (*Writer) Write
+
+```go
+func (me *Writer) Write(p []byte) (n int, err error)
 ```
