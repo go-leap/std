@@ -8,17 +8,16 @@ import (
 	"time"
 )
 
-func DoNowAndThenEvery(interval time.Duration, should func() bool, do func()) (stop func()) {
+func DoNowAndThenEvery(interval time.Duration, should func() bool, do func()) (start func(), stop func()) {
 	if do(); interval > 0 {
-		ticker, dontask := time.NewTicker(interval), should == nil
-		stop = ticker.Stop
-		go func() {
+		ticker := time.NewTicker(interval)
+		stop, start = ticker.Stop, func() {
 			for range ticker.C {
-				if dontask || should() {
+				if should == nil || should() {
 					do()
 				}
 			}
-		}()
+		}
 	}
 	return
 }
