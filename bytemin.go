@@ -28,7 +28,7 @@ func (me *BytesReader) Read(p []byte) (n int, err error) {
 	return
 }
 
-const bytesWriterPadding = 128
+const bytesWriterPadding = 88
 
 type BytesWriter struct{ Data []byte }
 
@@ -38,7 +38,7 @@ func (me *BytesWriter) WriteByte(b byte) {
 	l, c := len(me.Data), cap(me.Data)
 	if l == c {
 		old := me.Data
-		me.Data = make([]byte, l+1, l+l+bytesWriterPadding) // the constant extra padding: if l is tiny, it helps much; if large, it hurts none
+		me.Data = make([]byte, l+1, l+l+bytesWriterPadding) // the constant extra padding: if l is tiny, it helps some; if large, it hurts none
 		copy(me.Data[:l], old)
 	} else {
 		me.Data = me.Data[:l+1]
