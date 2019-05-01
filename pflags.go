@@ -42,7 +42,12 @@ func FlagOfUint(name string, defaultVal uint64, desc string) uint64 {
 
 func FlagOfStrings(name string, defaultVal []string, sep string, desc string) []string {
 	return FlagOther(name, defaultVal, desc,
-		func(s string) (interface{}, error) { return strings.Split(s, sep), nil },
+		func(s string) (interface{}, error) {
+			if s == "" { // dont want a slice of 1 empty string usually..
+				return []string{}, nil
+			}
+			return strings.Split(s, sep), nil
+		},
 		func(v interface{}) string { return strings.Join(v.([]string), sep) },
 	).([]string)
 }
