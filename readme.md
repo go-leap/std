@@ -135,6 +135,12 @@ type BytesWriter struct{ Data []byte }
 func (me *BytesWriter) Bytes() []byte
 ```
 
+#### func (*BytesWriter) Reset
+
+```go
+func (me *BytesWriter) Reset()
+```
+
 #### func (*BytesWriter) TrimSuffix
 
 ```go

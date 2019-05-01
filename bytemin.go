@@ -34,6 +34,8 @@ type BytesWriter struct{ Data []byte }
 
 func (me *BytesWriter) Bytes() []byte { return me.Data }
 
+func (me *BytesWriter) Reset() { me.Data = me.Data[0:0] }
+
 func (me *BytesWriter) WriteByte(b byte) {
 	l, c := len(me.Data), cap(me.Data)
 	if l == c {
