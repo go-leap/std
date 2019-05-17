@@ -83,15 +83,15 @@ func flagOfString(f *Flag) string {
 				if len(val) >= 2 && val[0] == '-' && val[1] == '-' {
 					continue
 				}
-				return val
+				return strings.TrimSpace(val)
 			}
 		} else if len(arg) > len(_n1) && arg[:len(_n1)] == _n1 {
-			return arg[len(_n1):]
+			return strings.TrimSpace(arg[len(_n1):])
 		} else if len(arg) > len(_n2) && arg[:len(_n2)] == _n2 {
-			return arg[len(_n2):]
+			return strings.TrimSpace(arg[len(_n2):])
 		}
 	}
-	return f.Default
+	return strings.TrimSpace(f.Default)
 }
 
 func flagReg(name string, desc string, defaultVal string) *Flag {
