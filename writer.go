@@ -4,6 +4,8 @@ import (
 	"io"
 )
 
+// Writer wraps any given `io.Writer` with additional
+// byte-based processing on `Write`s.
 type Writer struct {
 	io.Writer
 	On struct {
@@ -16,14 +18,17 @@ type Writer struct {
 	last byte
 }
 
+// SuspendOnDo causes `On.Do` not to be called during `Write`s until `RestartOnDo`.
 func (me *Writer) SuspendOnDo() {
 	me.num = -1
 }
 
+// RestartOnDo resets the counter for `On.Do` calls during `Write`s.
 func (me *Writer) RestartOnDo() {
 	me.num = 0
 }
 
+// Write calls `me.Writer.Write` and if `me.On.AfterEveryNth` and `me.On.Do` are set, traverses `p` to conditionally call `me.On.Do` with an internal counter.
 func (me *Writer) Write(p []byte) (n int, err error) {
 	if me.On.Do == nil || me.On.AfterEveryNth <= 0 || me.num < 0 {
 		n, err = me.Writer.Write(p)

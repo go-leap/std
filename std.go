@@ -8,6 +8,8 @@ import (
 	"time"
 )
 
+// DoNowAndThenEvery invokes `do` immediately, then if `interval` is given, returns a `start` func that
+// invokes `do` every `interval` `time.Duration` together with a `stop` func to `time.Ticker.Stop` doing so.
 func DoNowAndThenEvery(interval time.Duration, should func() bool, do func()) (start func(), stop func()) {
 	if do(); interval > 0 {
 		ticker := time.NewTicker(interval)
@@ -42,6 +44,7 @@ func JsonEncodeToFile(from interface{}, toFilePath string) (err error) {
 	return
 }
 
+// For is a `sync.WaitGroup`-based parallel `for` loop equivalent.
 func For(numIter int, on func(int)) {
 	var wait sync.WaitGroup
 	wait.Add(numIter)
@@ -52,6 +55,7 @@ func For(numIter int, on func(int)) {
 	wait.Wait()
 }
 
+// IfNil returns `val` if not `nil`, else `thenFallbackTo`.
 func IfNil(val interface{}, thenFallbackTo interface{}) interface{} {
 	if val == nil {
 		return thenFallbackTo
@@ -59,6 +63,7 @@ func IfNil(val interface{}, thenFallbackTo interface{}) interface{} {
 	return val
 }
 
+// Time records a start time and returns a `func` to compute the `time.Duration` since then.
 func Time() func() time.Duration {
 	starttime := time.Now().UnixNano()
 	return func() time.Duration {
@@ -66,14 +71,15 @@ func Time() func() time.Duration {
 	}
 }
 
-func WriteLines(to io.Writer) func(...string) {
-	return func(lns ...string) {
-		if len(lns) > 0 {
-			b := make([]byte, 0, len(lns)*len(lns[0]))
-			for i := range lns {
-				b = append(append(b, lns[i]...), '\n')
+// WriteLines returns a `func` that writes the specified `lines` to `w`.
+func WriteLines(w io.Writer) func(...string) {
+	return func(lines ...string) {
+		if len(lines) > 0 {
+			b := make([]byte, 0, len(lines)*len(lines[0]))
+			for i := range lines {
+				b = append(append(b, lines[i]...), '\n')
 			}
-			_, _ = to.Write(b)
+			_, _ = w.Write(b)
 		}
 	}
 }
