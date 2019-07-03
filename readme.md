@@ -175,6 +175,12 @@ func (me *BytesWriter) Reset()
 ```
 Reset sets the `len` of `me.Data` to 0.
 
+#### func (*BytesWriter) String
+
+```go
+func (me *BytesWriter) String() string
+```
+
 #### func (*BytesWriter) TrimSuffix
 
 ```go

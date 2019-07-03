@@ -2,6 +2,7 @@ package ustd
 
 import (
 	"io"
+	"unsafe"
 )
 
 // BytesReader implements `io.Reader` over a slice of `byte`s in a leaner manner than the reader-and-writer `bytes.Buffer`.
@@ -40,6 +41,10 @@ func (me *BytesWriter) Bytes() []byte { return me.Data }
 
 // Reset sets the `len` of `me.Data` to 0.
 func (me *BytesWriter) Reset() { me.Data = me.Data[0:0] }
+
+func (me *BytesWriter) String() string {
+	return *(*string)(unsafe.Pointer(&me.Data))
+}
 
 // WriteByte writes a single `byte` to `me.Data`.
 func (me *BytesWriter) WriteByte(b byte) {
