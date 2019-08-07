@@ -84,28 +84,31 @@ func FlagOfOther(name string, defaultVal interface{}, desc string, fromString fu
 }
 
 func flagOfString(f *Flag) string {
-	n2, n1 := "", "--"+f.Name
-	_n2, _n1 := "", n1+"="
-	if Flags.AddShortNames {
-		n2 = "--" + f.ShortName()
-		_n2 = n2 + "="
-	}
-	for i, l, il := 1, len(os.Args), len(os.Args)-1; i < l; i++ {
-		if arg := os.Args[i]; arg == n1 || arg == n2 {
-			if i < il {
-				val := os.Args[i+1]
-				if len(val) >= 2 && val[0] == '-' && val[1] == '-' {
-					continue
-				}
-				return strings.TrimSpace(val)
-			}
-		} else if len(arg) > len(_n1) && arg[:len(_n1)] == _n1 {
-			return strings.TrimSpace(arg[len(_n1):])
-		} else if len(arg) > len(_n2) && arg[:len(_n2)] == _n2 {
-			return strings.TrimSpace(arg[len(_n2):])
+	var prefs1, prefs2 []string
+	for _, s := range []string{"--", "/", "-"} {
+		if prefs1 = append(prefs1, s+f.Name); Flags.AddShortNames {
+			prefs1 = append(prefs1, s+f.ShortName())
 		}
 	}
-	return strings.TrimSpace(f.Default)
+	for _, s := range prefs1 {
+		prefs2 = append(prefs2, s+"=", s+":")
+	}
+	for i, il := 1, len(os.Args)-1; i < len(os.Args); i++ {
+		arg := os.Args[i]
+		if i != il {
+			for _, s := range prefs1 {
+				if arg == s {
+					return os.Args[i+1]
+				}
+			}
+		}
+		for _, s := range prefs2 {
+			if strings.HasPrefix(arg, s) {
+				return arg[len(s):]
+			}
+		}
+	}
+	return f.Default
 }
 
 func flagReg(name string, desc string, defaultVal string) *Flag {
