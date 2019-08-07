@@ -228,6 +228,8 @@ type Flag struct {
 	Desc string
 	// Default, the fall-back value if none was specified by the user
 	Default string
+	// AllowForAccidentalSpaceAtTheExpenseOfEmptyStrVals allows accidental arg placements such as `--foo= bar` (instead of either `--foo bar` or `--foo=bar`) but hence drops support for "" (empty string) values
+	AllowForAccidentalSpaceAtTheExpenseOfEmptyStrVals bool
 }
 ```
 

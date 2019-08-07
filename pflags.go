@@ -16,6 +16,8 @@ type Flag struct {
 	Desc string
 	// Default, the fall-back value if none was specified by the user
 	Default string
+	// AllowForAccidentalSpaceAtTheExpenseOfEmptyStrVals allows accidental arg placements such as `--foo= bar` (instead of either `--foo bar` or `--foo=bar`) but hence drops support for "" (empty string) values
+	AllowForAccidentalSpaceAtTheExpenseOfEmptyStrVals bool
 }
 
 var Flags struct {
@@ -66,12 +68,12 @@ func FlagOfStrings(name string, defaultVal []string, sep string, desc string) (v
 
 // FlagOfString obtains `val` from the command-line argument flag named `name` or the `defaultVal`.
 func FlagOfString(name string, defaultVal string, desc string) (val string) {
-	return flagOfString(flagReg(name, desc, defaultVal))
+	return flagOfString(flagReg(name, desc, defaultVal, true))
 }
 
 // FlagOfOther obtains `val` from the command-line argument flag named `name` or the `defaultVal`.
 func FlagOfOther(name string, defaultVal interface{}, desc string, fromString func(string) (interface{}, error), toString func(interface{}) string) (val interface{}) {
-	if str := flagOfString(flagReg(name, desc, toString(defaultVal))); str == "" {
+	if str := flagOfString(flagReg(name, desc, toString(defaultVal), false)); str == "" {
 		val = defaultVal
 	} else if v, e := fromString(str); e != nil {
 		if val = defaultVal; Flags.OnErr != nil {
@@ -93,17 +95,23 @@ func flagOfString(f *Flag) string {
 	for _, s := range prefs1 {
 		prefs2 = append(prefs2, s+"=", s+":")
 	}
+	prefsbothkinds, allowemptystrvals := [][]string{prefs1, prefs2}, !f.AllowForAccidentalSpaceAtTheExpenseOfEmptyStrVals
+	if allowemptystrvals {
+		prefsbothkinds = prefsbothkinds[0:1]
+	}
 	for i, il := 1, len(os.Args)-1; i < len(os.Args); i++ {
 		arg := os.Args[i]
 		if i != il {
-			for _, s := range prefs1 {
-				if arg == s {
-					return os.Args[i+1]
+			for _, prefs := range prefsbothkinds {
+				for _, s := range prefs {
+					if arg == s {
+						return os.Args[i+1]
+					}
 				}
 			}
 		}
 		for _, s := range prefs2 {
-			if strings.HasPrefix(arg, s) {
+			if (allowemptystrvals || len(arg) > len(s)) && strings.HasPrefix(arg, s) {
 				return arg[len(s):]
 			}
 		}
@@ -111,13 +119,13 @@ func flagOfString(f *Flag) string {
 	return f.Default
 }
 
-func flagReg(name string, desc string, defaultVal string) *Flag {
+func flagReg(name string, desc string, defaultVal string, allowEmptyStrVals bool) *Flag {
 	for i := range Flags.Known {
 		if Flags.Known[i].Name == name {
 			return &Flags.Known[i]
 		}
 	}
-	Flags.Known = append(Flags.Known, Flag{Name: name, Desc: desc, Default: defaultVal})
+	Flags.Known = append(Flags.Known, Flag{Name: name, Desc: desc, Default: defaultVal, AllowForAccidentalSpaceAtTheExpenseOfEmptyStrVals: !allowEmptyStrVals})
 	return &Flags.Known[len(Flags.Known)-1]
 }
 
